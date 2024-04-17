@@ -14,6 +14,7 @@ import (
 
 	"github.com/SawitProRecruitment/UserService/generated"
 	"github.com/SawitProRecruitment/UserService/handler"
+	"github.com/SawitProRecruitment/UserService/mock"
 	"github.com/SawitProRecruitment/UserService/repository"
 	"github.com/golang-jwt/jwt"
 	"github.com/golang/mock/gomock"
@@ -28,7 +29,7 @@ func TestRegister(t *testing.T) {
 	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
 	publicKey := privateKey.PublicKey
 
-	repo := repository.NewMockRepositoryInterface(ctrl)
+	repo := mock.NewMockRepositoryInterface(ctrl)
 	server := handler.NewServer(handler.NewServerOptions{
 		Repository: repo,
 		PrivateKey: privateKey,
@@ -159,7 +160,7 @@ func TestLogin(t *testing.T) {
 	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
 	publicKey := privateKey.PublicKey
 
-	repo := repository.NewMockRepositoryInterface(ctrl)
+	repo := mock.NewMockRepositoryInterface(ctrl)
 	server := handler.NewServer(handler.NewServerOptions{
 		Repository: repo,
 		PrivateKey: privateKey,
@@ -312,7 +313,7 @@ func TestGetProfile(t *testing.T) {
 	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
 	publicKey := privateKey.PublicKey
 
-	repo := repository.NewMockRepositoryInterface(ctrl)
+	repo := mock.NewMockRepositoryInterface(ctrl)
 	server := handler.NewServer(handler.NewServerOptions{
 		Repository: repo,
 		PrivateKey: privateKey,
@@ -404,7 +405,7 @@ func TestUpdateProfile(t *testing.T) {
 	privateKey, _ := rsa.GenerateKey(rand.Reader, 2048)
 	publicKey := privateKey.PublicKey
 
-	repo := repository.NewMockRepositoryInterface(ctrl)
+	repo := mock.NewMockRepositoryInterface(ctrl)
 	server := handler.NewServer(handler.NewServerOptions{
 		Repository: repo,
 		PrivateKey: privateKey,

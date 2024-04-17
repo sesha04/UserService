@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"regexp"
 
@@ -137,7 +136,6 @@ func (s *Server) UpdateMyProfile(ctx echo.Context) error {
 	var body generated.UpdateMyProfileJSONRequestBody
 	err = ctx.Bind(&body)
 	if err != nil {
-		fmt.Println(err)
 		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{})
 	}
 

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/SawitProRecruitment/UserService/mock"
 	"github.com/SawitProRecruitment/UserService/repository"
 	gomock "github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -20,7 +21,7 @@ func TestRegisterUser(t *testing.T) {
 	if err != nil {
 		return
 	}
-	mockPassHasher := repository.NewMockPasswordHasherInterface(ctrl)
+	mockPassHasher := mock.NewMockPasswordHasherInterface(ctrl)
 	repo := repository.Repository{
 		Db:             db,
 		PasswordHasher: mockPassHasher,
