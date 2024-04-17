@@ -37,4 +37,4 @@ type User struct {
 	UpdatedAt      time.Time
 }
 
-var UserNotFoundErr = errors.New("user not found")
+var ErrUserNotFound = errors.New("user not found")

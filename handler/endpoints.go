@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"regexp"
 
@@ -12,11 +13,10 @@ import (
 
 // (POST /register)
 func (s *Server) Register(ctx echo.Context) error {
-
 	var body generated.RegisterJSONRequestBody
 	err := ctx.Bind(&body)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{})
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{Message: "invalid request body"})
 	}
 
 	errList := s.validateRegisterRequest(body)
@@ -29,7 +29,7 @@ func (s *Server) Register(ctx echo.Context) error {
 	}
 
 	existingUser, err := s.Repository.GetUserByPhoneNumber(ctx.Request().Context(), body.PhoneNumber)
-	if err != nil && err != repository.UserNotFoundErr {
+	if err != nil && err != repository.ErrUserNotFound {
 		return ctx.JSON(http.StatusInternalServerError, generated.ErrorResponse{Message: err.Error()})
 	}
 
@@ -59,12 +59,12 @@ func (s *Server) Login(ctx echo.Context) error {
 	var body generated.LoginJSONRequestBody
 	err := ctx.Bind(&body)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{})
+		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{Message: "invalid request body"})
 	}
 
 	errList := s.validateLoginRequest(body)
 	if len(errList) > 0 {
-		errorResp := generated.MultiErrorResponse{Message: "invallid request body", Errors: make([]generated.ErrorResponse, len(errList))}
+		errorResp := generated.MultiErrorResponse{Message: "invalid request body", Errors: make([]generated.ErrorResponse, len(errList))}
 		for i := 0; i < len(errList); i++ {
 			errorResp.Errors[i] = generated.ErrorResponse{Message: errList[i].Error()}
 		}
@@ -73,8 +73,8 @@ func (s *Server) Login(ctx echo.Context) error {
 
 	user, err := s.Repository.GetUserByPhoneNumber(ctx.Request().Context(), body.PhoneNumber)
 	if err != nil {
-		if err == repository.UserNotFoundErr {
-			return ctx.JSON(http.StatusNotFound, generated.ErrorResponse{Message: "phone number is not registered"})
+		if err == repository.ErrUserNotFound {
+			return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{Message: "phone number is not registered"})
 		}
 
 		return ctx.JSON(http.StatusInternalServerError, generated.ErrorResponse{Message: err.Error()})
@@ -95,7 +95,7 @@ func (s *Server) Login(ctx echo.Context) error {
 		AccessToken: token,
 	}
 
-	return ctx.JSON(http.StatusCreated, resp)
+	return ctx.JSON(http.StatusOK, resp)
 }
 
 // (GET /profile)
@@ -107,7 +107,7 @@ func (s *Server) GetMyProfile(ctx echo.Context) error {
 
 	user, err := s.Repository.GetUserById(ctx.Request().Context(), claims.UserId)
 	if err != nil {
-		if err == repository.UserNotFoundErr {
+		if err == repository.ErrUserNotFound {
 			return ctx.JSON(http.StatusNotFound, generated.ErrorResponse{Message: "user not found"})
 		}
 
@@ -119,7 +119,7 @@ func (s *Server) GetMyProfile(ctx echo.Context) error {
 		Id:          user.Id,
 		PhoneNumber: user.PhoneNumber,
 	}
-	return ctx.JSON(http.StatusCreated, resp)
+	return ctx.JSON(http.StatusOK, resp)
 }
 
 // (PATCH /profile)
@@ -132,12 +132,13 @@ func (s *Server) UpdateMyProfile(ctx echo.Context) error {
 	var body generated.UpdateMyProfileJSONRequestBody
 	err = ctx.Bind(&body)
 	if err != nil {
+		fmt.Println(err)
 		return ctx.JSON(http.StatusBadRequest, generated.ErrorResponse{})
 	}
 
 	if body.PhoneNumber != "" {
 		user, err := s.Repository.GetUserByPhoneNumber(ctx.Request().Context(), body.PhoneNumber)
-		if err != nil && err != repository.UserNotFoundErr {
+		if err != nil && err != repository.ErrUserNotFound {
 			return ctx.JSON(http.StatusInternalServerError, generated.ErrorResponse{Message: err.Error()})
 		}
 
@@ -148,7 +149,7 @@ func (s *Server) UpdateMyProfile(ctx echo.Context) error {
 
 	user, err := s.Repository.GetUserById(ctx.Request().Context(), claims.UserId)
 	if err != nil {
-		if err == repository.UserNotFoundErr {
+		if err == repository.ErrUserNotFound {
 			return ctx.JSON(http.StatusNotFound, generated.ErrorResponse{Message: "user not found"})
 		}
 
@@ -171,7 +172,7 @@ func (s *Server) UpdateMyProfile(ctx echo.Context) error {
 		Id:          user.Id,
 		PhoneNumber: user.PhoneNumber,
 	}
-	return ctx.JSON(http.StatusCreated, resp)
+	return ctx.JSON(http.StatusOK, resp)
 }
 
 func (s *Server) validateRegisterRequest(body generated.RegisterJSONRequestBody) []error {

@@ -3,7 +3,6 @@ package handler
 import (
 	"crypto/rsa"
 	"errors"
-	"fmt"
 	"regexp"
 	"strings"
 	"time"
@@ -84,10 +83,6 @@ func (s *Server) verifyJWTToken(auth string) (JWTClaims, error) {
 	tokenString := splitAuth[1]
 	claims := JWTClaims{}
 	parsedToken, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-		}
-
 		return s.publicKey, nil
 	})
 

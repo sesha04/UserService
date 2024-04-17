@@ -39,7 +39,7 @@ func (r *Repository) GetUserByPhoneNumber(ctx context.Context, phoneNumber strin
 		&output.HashedPassword, &output.PasswordSalt, &output.LoginCount, &output.CreatedAt, &output.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, UserNotFoundErr
+			return nil, ErrUserNotFound
 		}
 
 		return nil, err
@@ -57,7 +57,7 @@ func (r *Repository) GetUserById(ctx context.Context, id int64) (*User, error) {
 		&output.HashedPassword, &output.PasswordSalt, &output.LoginCount, &output.CreatedAt, &output.UpdatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, UserNotFoundErr
+			return nil, ErrUserNotFound
 		}
 
 		return nil, err
