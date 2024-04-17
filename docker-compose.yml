@@ -5,45 +5,6 @@ services:
       - "8080:1323"
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/database?sslmode=disable
-      PRIVATE_KEY: |
-        -----BEGIN RSA PRIVATE KEY-----
-        MIIEowIBAAKCAQEAuapB+9DSCJGCACSIlr+stUGYufz5C3F+fco/Q/QNijFSmB16
-        vaqooGoMiTVstw++7TH9+QIMNjeApo3ZWgUwn1He8Nlx154PvS7P0yqa8WIKq84P
-        YnVIp7nfrJW2hLRwCPTOMKAHZQl7RZi2s8Bfwgn5MTaOPCNFuRPH0dBXcWPFdo/m
-        V94pEgw91Xa0VZxUj4EY7HDEP4INTPaQYnBWq3S/EFzYuRWcvdfY9BInQEJOGt07
-        FyWwijNPQd9LONoXePvpm+rNl5NvP2GCwjQ9U5Vfj3XqarbWXOqj9ulKIP3z5Az2
-        6xYpSfuTCDN6JtwiwX8EtsihsNgBXLqA4SUErQIDAQABAoIBAFBc+KiVr4PT77A+
-        H/0YRBpEpWXDsMyaOIUcGJxCM+YgCT8ca3dTOiANJxXw0Pi/0QV8QREaKM0C4yW0
-        emLzoiMj3drkU9lfajKZ44zkgSKALFxHGfOlDmjDFKTwPIteSqwlwmXbrre2DeyG
-        +HX/i7NCe+EoWxJ+tfwxKqmPg3npVy4yZ5UaFiu39LPfeDm4I79Frxh97CQJA9J+
-        RomRrovbR+pHUN4vqnVNKL3P6iWfQP6wrq1qeswjewK4SKlXAgWt3ECpa3OeuHQh
-        R7a0YzuvDEnB0HguGFua4R3HZZPp3rgAKSkJ1GtEMxlueUtrBKG7gmQy8eX1jv6s
-        1CSwGEECgYEA7ZGO56OIxnAPu0Gj+Jb2T5OqVSy9F5T5fi814WZuTX04vyZxogHK
-        k4CNzz0K5f1SrLmeww1RvT7VL6nqlq0y5Mh4MICSc38ELDu9pFffTz0sLqWMBddp
-        SDcTbPQWORmedCkDpLAAYrNCWmQ0X7cQ9DAwvQz35mw8J4N6QtjN4F0CgYEAyBHS
-        2rNqgBTpwyG5Vlxpqv78D1P5sw5RE8gnWxWZgyJAVWFiTPdPAEc/LAbRUw/mA37Y
-        91ssiutvGOeRZ4rRGtckCUIivGZ1SdRBJoNGVn3+DTbbMJbjvxBOUI28LU8a9e00
-        gJjlQ7j79rOPB5OJhMgVaj017FORQayZVaLdsJECgYBi3BejvSHFsgxZ2E7ru6Z0
-        JvbSyvNFRPEt2WeKjJ2KEXnz0YOn7yblirF4c+Z9HpWw2u1+LaS+I8+DLio42Yo8
-        OlAJnvdSqKCL57BbG1YKG2KvZqSGKcXeD00+IbS9vjN6Ezc46SS/7ejGxLwmuH+N
-        niAqC6N9d7zwlH3kI2RI4QKBgHZsVmqtmHSH7HZcF+BOgx18IKbSBhM+fi8/Ykw/
-        1MYSGBJxukXkfRalFXdx8aVA291lz/daOFtiUDhlmWO4f11ryyDPzM/HtdUllgq9
-        2XyIxz/7IHL6XYRSmoiD3MbU9Bhtd45G8i3L6Rh14EuTwOqfpE1mPezM6kX9bCWM
-        abyBAoGBAL7Z8RCU+f4aofxyiguofJTlgDPalt79BeW3fFjh6tBzwCuHY0JNv3gC
-        RKN/T+Q3SLF70Rilwyh1Kmu0jbBL14uzvhc7gvkETJtQCLsKQuamOPUsD8AUL8pS
-        b5paUlIZ+BdOcyMAvyx+CdvW2WfRbdCRX7bgyyvOnh1IrjDCD1gK
-        -----END RSA PRIVATE KEY-----
-      PUBLIC_KEY: |
-        -----BEGIN PUBLIC KEY-----
-        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuapB+9DSCJGCACSIlr+s
-        tUGYufz5C3F+fco/Q/QNijFSmB16vaqooGoMiTVstw++7TH9+QIMNjeApo3ZWgUw
-        n1He8Nlx154PvS7P0yqa8WIKq84PYnVIp7nfrJW2hLRwCPTOMKAHZQl7RZi2s8Bf
-        wgn5MTaOPCNFuRPH0dBXcWPFdo/mV94pEgw91Xa0VZxUj4EY7HDEP4INTPaQYnBW
-        q3S/EFzYuRWcvdfY9BInQEJOGt07FyWwijNPQd9LONoXePvpm+rNl5NvP2GCwjQ9
-        U5Vfj3XqarbWXOqj9ulKIP3z5Az26xYpSfuTCDN6JtwiwX8EtsihsNgBXLqA4SUE
-        rQIDAQAB
-        -----END PUBLIC KEY-----
-
     depends_on:
       db:
         condition: service_healthy

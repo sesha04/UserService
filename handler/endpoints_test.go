@@ -193,6 +193,7 @@ func TestLogin(t *testing.T) {
 		ctx := e.NewContext(req, rec)
 
 		repo.EXPECT().GetUserByPhoneNumber(req.Context(), phoneNumber).Return(&user, nil)
+		repo.EXPECT().IncrementUserLoginCount(req.Context(), user.Id).Return(nil)
 
 		err := server.Login(ctx)
 		assert.Nil(t, err)
@@ -272,7 +273,7 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, http.StatusBadRequest, rec.Code)
 	})
 
-	t.Run("error generatin token", func(t *testing.T) {
+	t.Run("error generating token", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(reqBody))
 		req.Header.Add("content-type", "application/json")
 		rec := httptest.NewRecorder()
@@ -285,6 +286,20 @@ func TestLogin(t *testing.T) {
 			Repository: repo,
 			PrivateKey: invalidPrivKey,
 		})
+		err := server.Login(ctx)
+		assert.Nil(t, err)
+		assert.Equal(t, http.StatusInternalServerError, rec.Code)
+	})
+
+	t.Run("error increment login count", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(reqBody))
+		req.Header.Add("content-type", "application/json")
+		rec := httptest.NewRecorder()
+		ctx := e.NewContext(req, rec)
+
+		repo.EXPECT().GetUserByPhoneNumber(req.Context(), phoneNumber).Return(&user, nil)
+		repo.EXPECT().IncrementUserLoginCount(req.Context(), user.Id).Return(errors.New("unexpected error"))
+
 		err := server.Login(ctx)
 		assert.Nil(t, err)
 		assert.Equal(t, http.StatusInternalServerError, rec.Code)

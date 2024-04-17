@@ -10,7 +10,8 @@ import (
 )
 
 type Repository struct {
-	Db *sql.DB
+	Db             *sql.DB
+	PasswordHasher PasswordHasherInterface
 }
 
 type NewRepositoryOptions struct {
@@ -23,11 +24,14 @@ func NewRepository(opts NewRepositoryOptions) *Repository {
 		panic(err)
 	}
 	return &Repository{
-		Db: db,
+		Db:             db,
+		PasswordHasher: &passwordHasher{},
 	}
 }
 
-func hashAndSalt(password string) ([]byte, []byte, error) {
+type passwordHasher struct{}
+
+func (h *passwordHasher) HashAndSaltPassword(password string) ([]byte, []byte, error) {
 	// Generate a random salt with 16 bytes
 	salt := make([]byte, 16)
 	_, err := rand.Read(salt)

@@ -64,6 +64,20 @@ func (mr *MockRepositoryInterfaceMockRecorder) GetUserByPhoneNumber(ctx, phoneNu
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUserByPhoneNumber", reflect.TypeOf((*MockRepositoryInterface)(nil).GetUserByPhoneNumber), ctx, phoneNumber)
 }
 
+// IncrementUserLoginCount mocks base method.
+func (m *MockRepositoryInterface) IncrementUserLoginCount(ctx context.Context, id int64) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IncrementUserLoginCount", ctx, id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// IncrementUserLoginCount indicates an expected call of IncrementUserLoginCount.
+func (mr *MockRepositoryInterfaceMockRecorder) IncrementUserLoginCount(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncrementUserLoginCount", reflect.TypeOf((*MockRepositoryInterface)(nil).IncrementUserLoginCount), ctx, id)
+}
+
 // RegisterUser mocks base method.
 func (m *MockRepositoryInterface) RegisterUser(ctx context.Context, input RegisterUserInput) (*User, error) {
 	m.ctrl.T.Helper()
@@ -91,4 +105,43 @@ func (m *MockRepositoryInterface) UpdateUser(ctx context.Context, input *User) e
 func (mr *MockRepositoryInterfaceMockRecorder) UpdateUser(ctx, input interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateUser", reflect.TypeOf((*MockRepositoryInterface)(nil).UpdateUser), ctx, input)
+}
+
+// MockPasswordHasherInterface is a mock of PasswordHasherInterface interface.
+type MockPasswordHasherInterface struct {
+	ctrl     *gomock.Controller
+	recorder *MockPasswordHasherInterfaceMockRecorder
+}
+
+// MockPasswordHasherInterfaceMockRecorder is the mock recorder for MockPasswordHasherInterface.
+type MockPasswordHasherInterfaceMockRecorder struct {
+	mock *MockPasswordHasherInterface
+}
+
+// NewMockPasswordHasherInterface creates a new mock instance.
+func NewMockPasswordHasherInterface(ctrl *gomock.Controller) *MockPasswordHasherInterface {
+	mock := &MockPasswordHasherInterface{ctrl: ctrl}
+	mock.recorder = &MockPasswordHasherInterfaceMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockPasswordHasherInterface) EXPECT() *MockPasswordHasherInterfaceMockRecorder {
+	return m.recorder
+}
+
+// HashAndSaltPassword mocks base method.
+func (m *MockPasswordHasherInterface) HashAndSaltPassword(password string) ([]byte, []byte, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "HashAndSaltPassword", password)
+	ret0, _ := ret[0].([]byte)
+	ret1, _ := ret[1].([]byte)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// HashAndSaltPassword indicates an expected call of HashAndSaltPassword.
+func (mr *MockPasswordHasherInterfaceMockRecorder) HashAndSaltPassword(password interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HashAndSaltPassword", reflect.TypeOf((*MockPasswordHasherInterface)(nil).HashAndSaltPassword), password)
 }

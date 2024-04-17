@@ -6,7 +6,7 @@ import (
 )
 
 func (r *Repository) RegisterUser(ctx context.Context, input RegisterUserInput) (*User, error) {
-	hashed, salt, err := hashAndSalt(input.Password)
+	hashed, salt, err := r.PasswordHasher.HashAndSaltPassword(input.Password)
 	if err != nil {
 		return nil, err
 	}
@@ -72,6 +72,17 @@ func (r *Repository) UpdateUser(ctx context.Context, input *User) error {
 		input.PhoneNumber, input.FullName, input.Id)
 
 	err := res.Scan(&input.PhoneNumber, &input.FullName, &input.UpdatedAt)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *Repository) IncrementUserLoginCount(ctx context.Context, id int64) error {
+	_, err := r.Db.ExecContext(ctx,
+		"UPDATE users SET login_count = login_count + 1, updated_at = NOW() WHERE id = $1",
+		id)
 	if err != nil {
 		return err
 	}

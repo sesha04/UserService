@@ -11,4 +11,9 @@ type RepositoryInterface interface {
 	GetUserByPhoneNumber(ctx context.Context, phoneNumber string) (*User, error)
 	GetUserById(ctx context.Context, id int64) (*User, error)
 	UpdateUser(ctx context.Context, input *User) error
+	IncrementUserLoginCount(ctx context.Context, id int64) error
+}
+
+type PasswordHasherInterface interface {
+	HashAndSaltPassword(password string) (hashedPassword []byte, salt []byte, err error)
 }

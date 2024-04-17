@@ -90,6 +90,11 @@ func (s *Server) Login(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, generated.ErrorResponse{Message: "error generating token"})
 	}
 
+	err = s.Repository.IncrementUserLoginCount(ctx.Request().Context(), user.Id)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, generated.ErrorResponse{Message: "error incrementing login count"})
+	}
+
 	resp := generated.LoginResponse{
 		Id:          user.Id,
 		AccessToken: token,
